@@ -27,7 +27,7 @@ app.get("/search", async function(req, res){
   
   var imageURLs = await tools.getRandomImages(keyword, 9);
   console.log("imageURLs using promies: " + imageURLs);
-  res.render("results", {"imageURLs": imageURLs});
+  res.render("results", {"imageURLs": imageURLs, "keyword" : keyword});
   
  // getRandomImages_cb(keyword, 9,function(imageURLs){
    // console.log("imageURLs: " + imageURLs);
@@ -45,10 +45,18 @@ app.get("/api/updateFavorites", function(req,res){
   database:"img_gallery"  
   })
   
-  var sql = "INSERT INTO favorites(imageURL, keyword) VALUES (?,?)";
+  var sql;
+  var sqlParams; 
   
-  var sqlParams = [req.query.imageURL, req.query.keyword];
   
+  if(req.query.action == "add"){
+  sql = "INSERT INTO favorites(imageURL, keyword) VALUES (?,?)";
+  sqlParams = [req.query.imageURL, req.query.keyword];
+  } else{
+    sql = "DELETE FROM favorites WHERE imageURL = ?";
+    sqlParams = [req.query.imageURL];
+    
+  }
   conn.connect( function(err){
     
   if (err) throw err;

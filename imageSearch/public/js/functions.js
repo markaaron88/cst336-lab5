@@ -8,20 +8,22 @@ $(document).ready(function(){
     
     if($(this).attr("src") == "img/fav_off.png"){
       $(this).attr("src","img/fav_on.png");
-      updateFavorite(imageURL);
+      updateFavorite("add",imageURL); //inserts a new record
     }else{
      $(this).attr("src","img/fav_off.png");
+     updateFavorite("delete",imageURL);//deletes record  
     }
     
   });
   
-  function updateFavorite(imageURL){
+  function updateFavorite(action,imageURL){
     
     $.ajax({
       method: "get",
         url: "/api/updateFavorites", 
         data: {"imageURL" : imageURL,
-                "keyword" : "coming soon!"
+                "keyword" : $("#keyword").val(),
+               "action" : action
               
               }
       
