@@ -57,7 +57,7 @@ getRandomImages_cb: function(keyword, imageCount, callback){
    *creates database connect
    * @return db connection
   */
-  createConnection: function(){
+  createConnection() {
       var conn = mysql.createConnection({
     host:"localhost",
     user:"root",
