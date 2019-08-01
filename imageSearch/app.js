@@ -15,7 +15,7 @@ app.get("/" , async function(req, res){
   
   var imageURLs = await tools.getRandomImages("", 1);
   //console.log("imageURLs using promies: " + imageURLs);
-  res.render("index", {"imageURL": imageURLs});
+  res.render("index", {"imageURLs": imageURLs});
   
         
 });//root route
@@ -68,8 +68,8 @@ var conn = tools.createConnection();
 });//updateFav
 
 
-app.get("/displayKeywords", function(req, res){
-  
+app.get("/displayKeywords", async function(req, res){
+  var imageURLs = await tools.getRandomImages("", 1);
   var conn = tools.createConnection();
   var sql = "SELECT DISTINCT keyword FROM `favorites` ORDER BY keyword";
   
@@ -78,7 +78,7 @@ app.get("/displayKeywords", function(req, res){
     if (err) throw err;
     conn.query(sql, function(err, result){
       if(err) throw err;
-      res.render( "favorites" , {"rows": result});
+      res.render( "favorites" , {"rows": result, "imageURLs": imageURLs});
       
     });//query
     
