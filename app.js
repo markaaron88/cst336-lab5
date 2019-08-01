@@ -56,12 +56,7 @@ app.get("/api/updateFavorites", function(req,res){
  
 //local testing  
 //var conn = tools.createConnection();
-  const conn = mysql.createConnection({
-    host: "us-cdbr-iron-east-02.cleardb.net",
-    user: "b3a557b94d9f06",
-    password: "6a18e5c6",
-    database: "heroku_03ffab8f95856a1"
-  })
+  const conn = connectMySql()
   
   
   
