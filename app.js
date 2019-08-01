@@ -120,7 +120,7 @@ app.get("/api/displayFavorites", function(req, res){
    var sqlParams = [req.query.keyword];
   
    conn.connect(function(err){
-    
+    console.log(err)
     if (err) throw err;
     conn.query(sql, sqlParams, function(err, results){
       if(err) throw err;
