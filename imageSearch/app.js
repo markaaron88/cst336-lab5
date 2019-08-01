@@ -38,12 +38,7 @@ app.get("/search", async function(req, res){
 
 app.get("/api/updateFavorites", function(req,res){
   
-  var conn = mysql.createConnection({
-    host:"localhost",
-    user:"root",
-  password:"",
-  database:"img_gallery"  
-  })
+var conn = tools.createConnection();
   
   var sql;
   var sqlParams; 
@@ -72,6 +67,44 @@ app.get("/api/updateFavorites", function(req,res){
   res.send("it works!");
 });//updateFav
 
+
+app.get("/displayKeywords", function(req, res){
+  
+  var conn = tools.createConnection();
+  var sql = "SELECT DISTINCT keyword FROM `favorites` ORDER BY keyword";
+  
+  conn.connect(function(err){
+    
+    if (err) throw err;
+    conn.query(sql, function(err, result){
+      if(err) throw err;
+      res.render( "favorites" , {"rows": result});
+      
+    });//query
+    
+  });// connect
+});//display Keywords
+
+app.get("/api/displayFavorites", function(req, res){
+  
+  
+   var conn = tools.createConnection();
+   var sql = "SELECT imageURL FROM favorites WHERE keyword = ?";
+   var sqlParams = [req.query.keyword];
+  
+   conn.connect(function(err){
+    
+    if (err) throw err;
+    conn.query(sql, sqlParams, function(err, results){
+      if(err) throw err;
+      res.send(results);
+      
+    });//query
+    
+  });// connect
+  
+  
+});
 
 
 //server listener
