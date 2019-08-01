@@ -8,19 +8,26 @@ const request = require("request");
 const mysql = require("mysql");
 
 const tools = require("./tools.js");
-var conn = mysql.createConnection(
-  {
+// var conn = mysql.createConnection(
+//   {
+//     host: "us-cdbr-iron-east-02.cleardb.net",
+//     user: "b3a557b94d9f06",
+//     password: "6a18e5c6",
+//     database: "heroku_03ffab8f95856a1"
+//   }
+// );
+//routes 
+function connectMySql() {
+  return mysql.createConnection({
     host: "us-cdbr-iron-east-02.cleardb.net",
     user: "b3a557b94d9f06",
     password: "6a18e5c6",
     database: "heroku_03ffab8f95856a1"
-  }
-);
-//routes 
+  })
+}
 
 //route route
 app.get("/" , async function(req, res){
-  
   var imageURLs = await tools.getRandomImages("", 1);
   //console.log("imageURLs using promies: " + imageURLs);
   res.render("index", {"imageURLs": imageURLs});
@@ -48,7 +55,7 @@ app.get("/api/updateFavorites", function(req,res){
  
 //local testing  
 //var conn = tools.createConnection();
-  
+  const conn = connectMySql()
   
   
   
@@ -84,6 +91,7 @@ app.get("/api/updateFavorites", function(req,res){
 app.get("/displayKeywords", async function(req, res){
   var imageURLs = await tools.getRandomImages("", 1);
   // var conn = tools.createConnection();
+  const conn = connectMySql()
   var sql = "SELECT DISTINCT keyword FROM `favorites` ORDER BY keyword";
   
   conn.connect(function(err){
@@ -102,6 +110,7 @@ app.get("/api/displayFavorites", function(req, res){
   
   
    // var conn = tools.createConnection();
+  const conn = connectMySql()
    var sql = "SELECT imageURL FROM favorites WHERE keyword = ?";
    var sqlParams = [req.query.keyword];
   
